@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const ChangePass = () => {
@@ -7,6 +7,11 @@ const ChangePass = () => {
     const [newPassword, setNewPassword] = useState('');
     const navigate = useNavigate();
 
+    useEffect(() => {
+        const name = JSON.parse(localStorage.getItem('change')) || []
+        setUsername(name)
+      }, []);
+
     const handleChangePassword = (navigate) => {
         if (!username || !currentPassword || !newPassword) {
             alert('Por favor, completa todos los campos.');
@@ -14,7 +19,7 @@ const ChangePass = () => {
         }
 
         const cuentas = JSON.parse(localStorage.getItem('cuentas')) || [];
-
+        
         const index = cuentas.findIndex(
             (cuenta) =>
                 cuenta.username === username &&
@@ -30,8 +35,13 @@ const ChangePass = () => {
         cuentas[index].password = newPassword;
         localStorage.setItem('cuentas', JSON.stringify(cuentas));
         alert('Contraseña cambiada exitosamente.');
-        navigate('/'); // o a donde quieras redirigir
+        regresar()
     };
+
+    const regresar = () =>{
+        localStorage.removeItem('change');
+        navigate('/')
+    }
 
     return (
         <div
@@ -73,7 +83,7 @@ const ChangePass = () => {
                         Cambiar Contraseña
                     </h2>
                     <button
-                        onClick={() => navigate('/')}
+                        onClick={regresar}
                         style={{
                             backgroundColor: '#f0f0f0',
                             border: 'none',
@@ -99,7 +109,6 @@ const ChangePass = () => {
                         type="text"
                         placeholder="Usuario"
                         value={username}
-                        onChange={(e) => setUsername(e.target.value)}
                         style={{
                             padding: '12px',
                             borderRadius: '8px',
@@ -143,8 +152,7 @@ const ChangePass = () => {
                             fontSize: '16px',
                             cursor: 'pointer',
                             transition: 'background-color 0.3s ease',
-                        }}
-                    >
+                        }}>
                         Guardar nueva contraseña
                     </button>
                 </form>

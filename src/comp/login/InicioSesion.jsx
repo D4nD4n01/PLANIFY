@@ -35,7 +35,10 @@ const InicioSesion = () => {
 
   const changePass = (attempt) => {
     setIntentos(attempt)
-    attempt == 3? navigate('/changePass') : console.log("intento: ",attempt)
+    if(attempt == 3){
+      localStorage.setItem('change', JSON.stringify(username));
+      navigate('/changePass')
+    } 
   }
 
   const handleLogin = () => {
@@ -63,6 +66,11 @@ const InicioSesion = () => {
       
     }
   };
+
+  const handleUsuario = (e) => {
+    setUsername(e.target.value)
+    changePass(0)
+  }
 
 
   return (
@@ -106,7 +114,7 @@ const InicioSesion = () => {
             type="text"
             placeholder="Usuario"
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={handleUsuario}
             style={{
               padding: '12px',
               borderRadius: '8px',
