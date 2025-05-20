@@ -116,7 +116,6 @@ const Menu = () => {
           )}
         </div>
 
-        {/* Botón de Cerrar Sesión */}
         <button
           onClick={handleLogout}
           style={{
